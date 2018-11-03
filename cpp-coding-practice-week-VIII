@@ -1,0 +1,671 @@
+//5.1 5.2 5.3
+#include"pch.h"
+#include<iostream>
+using namespace std;
+
+float fac(int); //l5.11_递归计算n！
+
+//int min = 1; (5.2 函数的定义)不允许自定义函数名与全局变量名相同
+//int a = 1; (5.2 函数的定义)允许与局部变量名相同
+
+void printstar() //l_5.1-简单的函数调用
+{
+	cout << "********************" << '\n';
+}
+void printmessage() //l_5.1-简单的函数调用
+{
+	cout << "   Welcome to C++" << '\n';
+}
+
+int min(int x, int y) //l_5.2 vc++必须有数据类型
+{
+	return (x < y ? x : y);
+}
+
+char func1() //5.2 函数的定义-类型强制转换
+{
+	int a = 97;
+	return a;
+}
+
+void func2() //5.2 函数的定义-无返回值
+{
+	int a = 1;
+	cout << "func2()" << endl;
+	return ; //此处可有可无 但不能写return void
+}
+
+int abs(int x) //l_5.3-求两个数最小值
+{
+	if (x >= 0)
+		return x;
+	else
+		return -x;
+}
+
+void swap(int x, int y) //l_5.5-理解传值调用
+{
+	int t;
+	t = x;
+	x = y;
+	y = t;
+	cout << "x=" << x << ',' << "y=" << y << endl;
+}
+
+void swap1(int a, int b) //l_5.6-进一步理解传值调用 注意不能有同名函数 所以改成swap1
+{
+	int t;
+	t = a;
+	a = b;
+	b = t;
+	cout << "a=" << a << ',' << "b=" << b << endl;
+}
+
+void swap2(int &x, int &y) //l_5.5_gai-例5.5改为引用调用
+{
+	int t;
+	t = x;
+	x = y;
+	y = t;
+	cout << "x=" << x << ',' << "y=" << y << endl;
+}
+
+int gcd(int x, int y) //l_5.8-辗转相除法求最大公约数，并求最小公倍数
+{
+	int r;
+	while ((r = x % y) != 0) //相当于 r = x % y; while(r != 0);
+	{
+		x = y; y = r;
+	}
+	return y;
+}
+
+int lcm(int x, int y) //l_5.8-辗转相除法求最大公约数，并求最小公倍数
+{
+	int d;
+	d = gcd(x, y);
+	return (x * y / d); //最小公倍数=两数乘积/最大公约数
+}
+
+
+int main()
+{
+	//l_5.1-简单的函数调用
+	printstar();
+	printmessage();
+	printstar();
+
+	//l_5.2-求两数最小值
+	//不允许同名函数 允许自定义函数名与系统库函数名相同 允许与函数的形式参数名相同
+	int a, b, mv;
+	cout << "input two integers:\n";
+	cin >> a >> b;
+	mv = min(a, b);
+	cout << "min = " << mv << endl;
+
+	cout << func1() << endl;; //5.2 函数的定义-类型强制转换
+
+	func2(); //5.2 函数的定义-无返回值
+
+	int x; //l_5.3-返回整数绝对值
+	cout << "input x:\n";
+	cin >> x;
+	cout << "abs = " << abs(x) << endl;
+
+	int min1(int, int); //l_5.4-函数原型声明 可以放在main()函数之前或程序中任何位置，且次数无限制，但一般放在调用函数开始部分
+	int min1(int a, int b); //可以与函数定义中的形参名不同
+	int min1(int, int);
+	mv = min1(a, b);
+	cout << "min = " << mv << endl;
+
+	//5.3.2 函数传值调用-实参是用来在调用函数时给形参初始化的。初始化按位置对应进行。实参可以是常量、变量和表达式。
+	//l_5.5-理解传值调用
+	int a55(4), b55(5); //等价于 int a55 = 4, b55 = 5; 这样定义的话，下面a55、b55再赋值不能写成 a55(4), b55(5); 而写成 a55 = 4, b55 = 5;
+	swap(a55 + 1 - 1, b55);
+	cout << "a=" << a55 << ',' << "b=" << b55 << endl;
+
+	a55 = 4, b55 = 5; //l_5.6-进一步理解传值调用
+	swap1(a55 + 1 - 1, b55);
+	cout << "a=" << a55 << ',' << "b=" << b55 << endl;
+
+	//5.5.3 函数引用调用
+	int i = 10, &r = i;
+	r += 10;
+	cout << "i=" << i << ',' << "r=" << r << endl;
+
+	//l_5.5_gai-5.5改为引用调用
+	a55 = 4, b55 = 5;
+	cout << "交换前：" << endl;
+	cout << "a=" << a55 << ',' << "b=" << b55 << endl;
+	swap2(a55, b55);
+	cout << "交换后：\n";
+	cout << "a=" << a55 << ',' << "b=" << b55 << endl;
+
+	//l_5.8-辗转相除法求最大公约数，并求最小公倍数
+	int x58, y58, d58, m58; 
+	cout << "input two integers:\n";
+	cin >> x58 >> y58;
+	d58 = gcd(x58, y58);
+	m58 = lcm(x58, y58);
+	cout << "最大公约数为：" << d58 << endl << "最小公倍数为：" << m58 << endl;
+
+	//l5.11_递归计算n！
+	int n;
+	float y;
+	cout << "input an integer:\n";
+	cin >> n;
+	y = fac(n);
+	if (n >= 0)
+		cout << n << "!=" << y << endl;
+
+
+
+	return 0;
+}
+
+int min1(int x, int y) //l_5.4-函数原型声明
+{
+	return (x < y ? x : y);
+}
+
+float fac(int n) //l5.11_递归计算n！
+{
+	float f;
+	if (n < 0)
+	{
+		cout << "n < 0, data error!\n";
+		return -1;
+	}
+	else if (n == 0 || n == 1)
+		f = 1;
+	else f = fac(n - 1) * n;
+	return f;
+}
+
+//5.4 5.5 5.6
+#include"pch.h"
+#include<iostream>
+using namespace std;
+
+int fun(int a, int b) //l5.14-使用不同求值顺序的编译器造成二义性
+{
+	return b;
+}
+
+void fun1(int x = 1, int y = 2, int z = 3) //l_5.15-设置函数参数默认值
+{
+	cout << "x=" << x << ',' << "y=" << y << ',' << "z=" << z << endl;
+}
+
+inline int cube(int x) //l_5.16-求4/8/12立方
+{
+	return(x * x * x);
+}
+
+int add(int, int); //l_5.17 求两个数之和
+double add(double, double);  //l_5.17 求两个数之和
+
+int max(int a, int b); //l_5.18-求几个int型数最大者
+int max(int a, int b, int c); //l_5.18-求几个int型数最大者
+
+int main()
+{
+	//5,4,1 函数实参的求值顺序
+	//l5.14 使用不同求值顺序的编译器造成二义性
+	int x(5), y(6);
+	int z = fun(--x, x + y);
+	cout << z << endl;
+
+	//5.4.1 函数实参的求值顺序
+	//l5.14 使用不同求值顺序的编译器造成二义性
+	x = 5, y = 6;
+	int w = --x;
+    z = fun(w, x + y);
+	cout << z << endl;
+
+	//5.4.2 函数形参的默认值-可以是常量、全局变量或函数调用，不能指定引用参数的默认值
+	//l_5.15-设置函数参数默认值
+	fun1();
+	fun1(5);
+	fun1(5, 6);
+	fun1(5, 6, 7);
+
+	//5.4.2 函数形参的默认值 主调函数在前 函数定义在后
+	void f1(); //此处记得声明函数原型
+	void f2();
+	f1();
+	f2();
+
+	//5.5 内联函数-1.内联函数内不允许出现循环、switch、复杂嵌套if语句 2.内联函数的定义必须出现在内联函数第一次被调用前 
+	//l_5.16-求4/8/12立方
+	int c;
+	c = cube(4);
+	cout << 4 << '*' << 4 << '*' << 4 << '=' << c << endl;
+	c = cube(8);
+	cout << 8 << '*' << 8 << '*' << 8 << '=' << c << endl;
+	c = cube(12);
+	cout << 12 << '*' << 12 << '*' << 12 << '=' << c << endl;
+
+	//5.6 函数重载 函数重载时，要求同名函数参数个数不同，参数类型不同，或是否为常成员函数
+	//参数类型不同的重载函数
+	//l_5.17 求两个数之和
+	cout << add(2, 3) << endl;
+	cout << add(2.0, 3.5) << endl;
+
+	//参数个数不同的重载函数
+	//l_5.18-求几个int型数最大者
+	cout << max(5, 8) << endl;
+	cout << max(10, 4, 20) << endl;
+
+
+
+	return 0;
+}
+
+void f1() //5.4.2 函数形参默认值-若主调函数在定义前面，在主调函数内函数原型声明设置默认值
+{
+	void fun2(int x = 0, int y = 0);
+	fun2();
+}
+
+void f2() //5.4.2 函数形参默认值-若主调函数在定义前面，在主调函数内函数原型声明设置默认值
+{
+	 void fun2(int x = 10, int y = 10);
+	 fun2();
+}
+
+void fun2(int x, int y) //5.4.2 函数形参默认值-若主调函数在定义前面，在主调函数内函数原型声明设置默认值，此处不用
+{
+	cout << "x=" << x << ',' << "y=" << y << endl;
+}
+
+int add(int x, int y) //l_5.17 求两个数之和
+{
+	return (x + y);
+}
+
+double add(double x, double y) //l_5.17 求两个数之和
+{
+	return (x + y);
+}
+
+int max(int a, int b) //l_5.18-求几个int型数最大者
+{
+	return(a > b ? a : b);
+}
+
+int max(int a, int b, int c)
+{
+	int m = a;
+	if (b > m) m = b;
+	if (c > m) m = c;
+	return m;
+}
+
+//第四章作业-必做1
+#include"pch.h"
+#include<iostream>
+using namespace std;
+int main(void)
+{
+	cout << "输入年份：\n";
+	int year;
+	cin >> year;
+	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+		cout << "该年是闰年\n";
+	else
+		cout << "该年不是闰年\n";
+	return 0;
+}
+
+//第四章作业-必做2
+#include"pch.h"
+#include<iostream>
+#include<iomanip>
+using namespace std;
+int main(void)
+{
+	for (int i = 7; i >= 1; i = i - 2)
+	{
+		cout << setw((7 - i) / 2 + 1); //注意setw()用法 是填充空白不是单纯加空格
+		for (int j = 1; i >= j; j++)
+			cout << '*';
+		cout << endl;
+	}
+
+	for (int i = 3; i <= 7; i = i + 2)
+	{
+		cout << setw((7 - i) / 2 + 1);
+		for (int j = 1; i >= j; j++)
+			cout << '*';
+		if (i != 7)
+			cout << endl;
+	}
+	return 0;
+}
+
+//第四章作业-必做3
+#include"pch.h"
+#include<iostream>
+using namespace std;
+int main(void)
+{
+	cout << "input:\n";
+	int c = 0, l = 0, n = 0, s = 0, o = 0; //初始化
+	while (true)
+	{
+		char ch; 
+		cin.get(ch); //the definition of ch is char
+		if (ch != 10)
+		{
+			if (ch >= 65 && ch <= 90) c++;
+			else if (ch >= 97 && ch <= 122) l++;
+			else if (ch >= 48 && ch <= 57) n++;
+			else if (ch == 32) s++; //the ascii of space is 32
+			else o++;
+		}
+
+		else break;
+
+	}
+
+	cout << "the number of capital letters is " << c << endl;
+	cout << "the number of lowercase letters is " << l << endl;
+	cout << "the number of numbers is " << n << endl;
+	cout << "the number of space is " << s << endl;
+	cout << "the number of other symbols is " << o << endl;
+}
+
+//第四章作业-必做1-拓展
+#include"pch.h"
+#include<iostream>
+using namespace std;
+int main(void)
+{
+
+	int year, month, day, sum = 0; //sum初始化
+	cin >> year >> month >> day; 
+	int Feb;
+	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+		Feb = 29;
+	else
+		Feb = 28;
+
+	for (int i = 1; i < month; i++) //注意if条件
+	{
+		if (i == 1 || i == 3 || i == 5 || i == 7 || i == 8 || i == 10) //不用i==12
+			sum += 31;
+		if (i == 4 || i == 6 || i == 9 || i == 11)
+			sum += 31;
+		if (i == 2)
+			sum += Feb;
+	}
+	sum += day;
+
+	cout << sum;
+	return 0;
+
+
+}
+
+//实验五
+#include"pch.h"
+#include<iostream>
+#include<cmath>
+#include<stdlib.h> //清屏：system("cls") 所在头文件
+using namespace std;
+
+void menu();
+float count(float, int);
+bool send(float, float);
+
+int main()
+{
+	while (true)
+	{
+		menu();
+		cout << "input an integer from 0 to 2 representing the function you want:\n";
+		loop: int input;
+		cin >> input;
+
+		if (input == 1)
+		{
+			float sum = 0;
+			while (true)
+			{
+				float x;
+				cout << "input the price of the item:\n";
+				cin >> x;
+				int y;
+				cout << "input the number of the item:\n";
+				cin >> y;
+				sum += count(x, y);
+
+				cout << "press 0 to exit the counting system, press others to continue counting:\n";
+				int z;
+				cin >> z;
+				if (z == 0)
+					break;
+				else
+					;
+			}
+			cout << "the total is: " << sum << endl;
+		}
+
+		else if (input == 2)
+		{
+			cout << "input the location in the form of x<space>y :\n";
+			float x, y;
+			cin >> x >> y;
+			if (send(x, y) == true)
+				cout << "delivery is availible.\n";
+			else
+				cout << "delivery is not availible.\n";
+		}
+
+		else if (input == 0)
+			break;
+
+		else
+		{
+			cout << "error! invalid data! please input again!\n";
+			goto loop;
+		}
+
+	cout << "press <Enter> to continue, press 0 to exit:\n";
+	char input1;
+	
+loop1: 
+	cin.ignore(1); //加上这个接收前面按0后的<Enter>!!!!!!! 而且这个语句必须在loop1之后，接收后面用户输入的非法字符之后按的<Enter>回到loop1，否则用户输入非法字符后<Enter>，相当于执行下面第一个if语句。
+	cin.get(input1);
+	if (int(input1) == 10)
+		;
+	else if (int(input1) == 48)
+		break;
+	else
+	{
+		cout << "error! invalid data! please input again!\n";
+		goto loop1;
+	}
+
+
+		system("cls"); //清屏
+	}
+
+	
+	return 0;
+}
+
+void menu()
+{
+	cout << "******************************" << endl;
+	cout << "欢迎来到星星超市 " << endl;
+	cout << "  本超市坐标(22，56)" << endl;
+	cout << "  超市3公里范围内可免费配送！" << endl;
+	cout << " 你可以选择下列功能(0-2): " << endl;
+	cout << "1、结账" << endl;
+	cout << "2、查询是否配送范围" << endl;
+	cout << "0、退出" << endl;
+	cout << "******************************" << endl;
+}
+
+float count(float price, int number)
+{
+	return (price * number);
+}
+
+bool send(float x, float y)
+{
+	double x1, y1, z;
+	x1 = double(x);
+	y1 = double(y);
+	z = sqrt(pow(x1 - 22, 2) - pow(y1 - 56, 2));
+	
+	if (z <= 300)
+		return true;
+	else
+		return false;
+}
+
+//实验五-拓展
+#include"pch.h"
+#include<iostream>
+#include<cmath>
+#include<stdlib.h> //清屏：system("cls") 所在头文件
+using namespace std;
+
+void menu();
+float count(float, int, float);
+bool send(float, float);
+
+int main()
+{
+	while (true)
+	{
+		menu();
+		cout << "input an integer from 0 to 2 representing the function you want:\n";
+	loop: int input;
+		cin >> input;
+
+		if (input == 1)
+		{
+			float x, y;
+			float p, sum;
+			p = 0;
+			while (true)
+			{
+				cout << "input the price of the item:\n";
+				cin >> x;
+				cout << "input the number of the item:\n";
+				cin >> y;
+				sum = count(x, y, p);
+				
+				cout << "press 0 to exit the counting system, press others to continue counting:\n";
+				int z;
+				cin >> z;
+				if (z == 0)
+					break;
+				else
+					;
+			}
+			
+			int i = 0;
+			while (p <= sum)
+			{
+				cout << sum - p;
+				if (i != 0)
+					cout << " still ";
+				cout << "should be paid\n";
+				float pd;
+				cout << "input the amount paid:\n";
+				cin >> pd;
+				p += pd;
+				i++;
+			}
+
+			count(0, 0, p); //前两个参数是0，否则会在count函数被运算，叠加进sum
+			
+		}
+
+		else if (input == 2)
+		{
+			cout << "input the location in the form of x<space>y :\n";
+			float x, y;
+			cin >> x >> y;
+			if (send(x, y) == true)
+				cout << "delivery is availible.\n";
+			else
+				cout << "delivery is not availible.\n";
+		}
+
+		else if (input == 0)
+			break;
+
+		else
+		{
+			cout << "error! invalid data! please input again!\n";
+			goto loop;
+		}
+
+		cout << "press <Enter> to continue, press 0 to exit:\n";
+		char input1;
+
+	loop1:
+		cin.ignore(1); //加上这个接收前面按0后的<Enter>!!!!!!! 而且这个语句必须在loop1之后，接收后面用户输入的非法字符之后按的<Enter>回到loop1，否则用户输入非法字符后<Enter>，相当于执行下面第一个if语句。
+		cin.get(input1);
+		if (int(input1) == 10)
+			;
+		else if (int(input1) == 48)
+			break;
+		else
+		{
+			cout << "error! invalid data! please input again!\n";
+			goto loop1;
+		}
+
+
+		system("cls"); //清屏
+	}
+
+
+	return 0;
+}
+
+void menu()
+{
+	cout << "******************************" << endl;
+	cout << "欢迎来到星星超市 " << endl;
+	cout << "  本超市坐标(22，56)" << endl;
+	cout << "  超市3公里范围内可免费配送！" << endl;
+	cout << " 你可以选择下列功能(0-2): " << endl;
+	cout << "1、结账" << endl;
+	cout << "2、查询是否配送范围" << endl;
+	cout << "0、退出" << endl;
+	cout << "******************************" << endl;
+}
+
+float count(float price, int number, float cash)
+{
+	static float sum = 0;
+	sum += price * number;
+	if (cash == 0)
+		return sum;
+	else
+	{
+		cout << "the change is " << cash - sum << endl;
+		return 0;
+	}
+}
+
+bool send(float x, float y)
+{
+	double x1, y1, z;
+	x1 = double(x);
+	y1 = double(y);
+	z = sqrt(pow(x1 - 22, 2) - pow(y1 - 56, 2));
+
+	if (z <= 300)
+		return true;
+	else
+		return false;
+} 
